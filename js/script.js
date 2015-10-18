@@ -1,11 +1,10 @@
 var cart = new Object();
 var products = new Object();
-var inactiveTime = 30;
+var inactiveTime = 5;
 var timeoutTracker;
 
 function initPage() {
-	decreaseTimer();
-	setInactiveTimeout();
+	runTimer();
 }
 
 function addToCart(productName) {
@@ -15,19 +14,17 @@ function addToCart(productName) {
 	} else {
 		cart[productName]++;
 	}
-	inactiveTime = 0;
 }
 
 function removeFromCart(productName) {
 	resetInactiveTimeout();
 	if (!cart.hasOwnProperty(productName)) {
-		window.alert("Property does not exist!");
-	} else if (cart[productName] === 1) {
+		window.alert("This item is not listed in your cart.");
+	} else if (cart[productName] == 1) {
 		delete cart[productName];
 	} else {
 		cart[productName]--;
 	}
-	inactiveTime = 0;
 }
 
 function isEmpty(obj) {
@@ -43,14 +40,13 @@ function showCart() {
 	var time = 0;
 	
 	if (isEmpty(cart)) {
-		window.alert("Cart is empty");
+		window.alert("Your Cart is Empty! To add an item to your cart, hover over any item and click 'add.' To remove an item from your cart, click 'remove.'");
 	} else {
 		for (var name in cart) {
 			displayAfterTimeout(time, name + ": " + cart[name]);
-			time += 30 * 1000;
+			time += 5 * 1000;
 		}
 	}
-	inactiveTime = 0;
 }
 
 function displayAfterTimeout(timeout, content) {
@@ -59,19 +55,16 @@ function displayAfterTimeout(timeout, content) {
 	}, timeout);
 }
 
-function setInactiveTimeout() {
-	timeoutTracker = setInterval(function() {
-		window.alert("Hey there!  Are you still planning to buy something?");
-	}, 30000);
-}
-
 function resetInactiveTimeout() {
-	clearInterval(timeoutTracker);
-	setInactiveTimeout();
+	inactiveTime = 5;
 }
 
-function decreaseTimer() {
+function runTimer() {
 	setInterval(function() {
 		inactiveTime--;
+		if (inactiveTime <= 0) {
+			window.alert("Hey there!  Are you still planning to buy something?");
+			inactiveTime = 5;
+		}
 	}, 1000);
 }
