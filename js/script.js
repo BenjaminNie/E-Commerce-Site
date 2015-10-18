@@ -1,6 +1,6 @@
 var cart = new Object();
 var products = new Object();
-var inactiveTime = 5;
+var inactiveTime = 30;
 var timeoutTracker;
 
 function initPage() {
@@ -56,7 +56,7 @@ function displayAfterTimeout(timeout, content) {
 }
 
 function resetInactiveTimeout() {
-	inactiveTime = 5;
+	inactiveTime = 30;
 }
 
 function runTimer() {
