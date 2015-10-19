@@ -1,6 +1,70 @@
-var cart = new Object();
-var products = new Object();
-var inactiveTime = 30;
+var product = [
+	'box1' : {
+		'price': 10
+		'quantity': 10
+	},
+	'box2': {
+		'price': 5
+		'quantity': 10
+	},
+	'clothes1': {
+		'price': 20
+		'quantity': 10
+	},
+	'clothes2': {
+		'price': 30
+		'quantity': 10
+	},
+	'jeans': {
+		'price': 50
+		'quantity': 10
+	},
+	'keyboard': {
+		'price': 20
+		'quantity': 10
+	},
+	'keyboardCombo': {
+		'price': 40
+		'quantity': 10
+	},
+	'mice': {
+		'price': 20
+		'quantity': 10
+	},
+	'pc1': {
+		'price': 350
+		'quantity': 10
+	},
+	'pc2': {
+		'price': 400
+		'quantity': 10
+	},
+	'ps3': {
+		'price': 300
+		'quantity': 10
+	},
+	'tent': {
+		'price': 100
+		'quantity': 10
+	}
+];
+
+var cart = {
+	'box1': 0,
+	'box2': 0,
+	'clothes1': 0,
+	'clothes2': 0,
+	'jeans': 0,
+	'keyboard': 0,
+	'keyboardCombo': 0,
+	'mice': 0,
+	'pc1': 0,
+	'pc2': 0,
+	'pc3': 0,
+	'tent': 0
+};
+	
+var inactiveTime = 300;
 var timeoutTracker;
 
 function initPage() {
@@ -49,6 +113,16 @@ function showCart() {
 	}
 }
 
+function updateCartPrice() {
+	var totalPrice = 0;
+	
+	for (var item in cart) {
+		totalPrice += cart[item] * product[item][price];
+	}
+	
+	return totalPrice;
+}
+		
 function displayAfterTimeout(timeout, content) {
 	setTimeout(function() {
 		window.alert(content);
@@ -56,7 +130,7 @@ function displayAfterTimeout(timeout, content) {
 }
 
 function resetInactiveTimeout() {
-	inactiveTime = 30;
+	inactiveTime = 300;
 }
 
 function runTimer() {
@@ -64,7 +138,7 @@ function runTimer() {
 		inactiveTime--;
 		if (inactiveTime <= 0) {
 			window.alert("Hey there!  Are you still planning to buy something?");
-			inactiveTime = 5;
+			inactiveTime = 300;
 		}
 	}, 1000);
 }
