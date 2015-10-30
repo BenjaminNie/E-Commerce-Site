@@ -1,54 +1,3 @@
-var product = [
-	'box1' : {
-		'price': 10
-		'quantity': 10
-	},
-	'box2': {
-		'price': 5
-		'quantity': 10
-	},
-	'clothes1': {
-		'price': 20
-		'quantity': 10
-	},
-	'clothes2': {
-		'price': 30
-		'quantity': 10
-	},
-	'jeans': {
-		'price': 50
-		'quantity': 10
-	},
-	'keyboard': {
-		'price': 20
-		'quantity': 10
-	},
-	'keyboardCombo': {
-		'price': 40
-		'quantity': 10
-	},
-	'mice': {
-		'price': 20
-		'quantity': 10
-	},
-	'pc1': {
-		'price': 350
-		'quantity': 10
-	},
-	'pc2': {
-		'price': 400
-		'quantity': 10
-	},
-	'ps3': {
-		'price': 300
-		'quantity': 10
-	},
-	'tent': {
-		'price': 100
-		'quantity': 10
-	}
-];
-
 var cart = {
 	'box1': 0,
 	'box2': 0,
@@ -63,9 +12,59 @@ var cart = {
 	'pc3': 0,
 	'tent': 0
 };
-	
-var inactiveTime = 300;
-var timeoutTracker;
+
+var product = {
+	'box1' : {
+		'price': 10,
+		'quantity': 10
+	},
+	'box2': {
+		'price': 5,
+		'quantity': 10
+	},
+	'clothes1': {
+		'price': 20,
+		'quantity': 10
+	},
+	'clothes2': {
+		'price': 30,
+		'quantity': 10
+	},
+	'jeans': {
+		'price': 50,
+		'quantity': 10
+	},
+	'keyboard': {
+		'price': 20,
+		'quantity': 10
+	},
+	'keyboardCombo': {
+		'price': 40,
+		'quantity': 10
+	},
+	'mice': {
+		'price': 20,
+		'quantity': 10
+	},
+	'pc1': {
+		'price': 350,
+		'quantity': 10
+	},
+	'pc2': {
+		'price': 400,
+		'quantity': 10
+	},
+	'ps3': {
+		'price': 300,
+		'quantity': 10
+	},
+	'tent': {
+		'price': 100,
+		'quantity': 10
+	}
+};
+
+var inactiveTime = 300
 
 function initPage() {
 	runTimer();
@@ -73,21 +72,24 @@ function initPage() {
 
 function addToCart(productName) {
 	resetInactiveTimeout();
-	if (!cart.hasOwnProperty(productName)) {
-		cart[productName] = 1;
+	var p = product[productName];
+	
+	if (p.quantity === 0) {
+		window.alert("There are no " + productName + " left in stock");
 	} else {
 		cart[productName]++;
+		p.quantity--;
 	}
 }
 
 function removeFromCart(productName) {
 	resetInactiveTimeout();
-	if (!cart.hasOwnProperty(productName)) {
-		window.alert("This item is not listed in your cart.");
-	} else if (cart[productName] == 1) {
-		delete cart[productName];
+	
+	if (cart[productName] === 0) {
+		window.alert("There are no " + productName + " in your cart.");
 	} else {
 		cart[productName]--;
+		p.quantity++;
 	}
 }
 
@@ -113,16 +115,6 @@ function showCart() {
 	}
 }
 
-function updateCartPrice() {
-	var totalPrice = 0;
-	
-	for (var item in cart) {
-		totalPrice += cart[item] * product[item][price];
-	}
-	
-	return totalPrice;
-}
-		
 function displayAfterTimeout(timeout, content) {
 	setTimeout(function() {
 		window.alert(content);
@@ -130,7 +122,7 @@ function displayAfterTimeout(timeout, content) {
 }
 
 function resetInactiveTimeout() {
-	inactiveTime = 300;
+	inactiveTime = 30;
 }
 
 function runTimer() {

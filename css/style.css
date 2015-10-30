@@ -30,6 +30,11 @@
     color: #2e6680;
 }
 
+#showCart {
+	position: relative;
+	left: 60px;
+}
+
 #navigationMenu {
     float: left;
     width: 200px;
