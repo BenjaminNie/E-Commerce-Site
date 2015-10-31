@@ -1,70 +1,76 @@
 var cart = {
-	'box1': 0,
-	'box2': 0,
-	'clothes1': 0,
-	'clothes2': 0,
-	'jeans': 0,
-	'keyboard': 0,
-	'keyboardCombo': 0,
-	'mice': 0,
-	'pc1': 0,
-	'pc2': 0,
-	'pc3': 0,
-	'tent': 0
+	'Box1': 0,
+	'Box2': 0,
+	'Clothes1': 0,
+	'Clothes2': 0,
+	'Jeans': 0,
+	'Keyboard': 0,
+	'KeyboardCombo': 0,
+	'Mice': 0,
+	'Pc1': 0,
+	'Pc2': 0,
+	'Pc3': 0,
+	'Tent': 0
 };
 
 var product = {
-	'box1' : {
+	'Box1' : {
 		'price': 10,
 		'quantity': 10
 	},
-	'box2': {
+	'Box2': {
 		'price': 5,
 		'quantity': 10
 	},
-	'clothes1': {
+	'Clothes1': {
 		'price': 20,
 		'quantity': 10
 	},
-	'clothes2': {
+	'Clothes2': {
 		'price': 30,
 		'quantity': 10
 	},
-	'jeans': {
+	'Jeans': {
 		'price': 50,
 		'quantity': 10
 	},
-	'keyboard': {
+	'Keyboard': {
 		'price': 20,
 		'quantity': 10
 	},
-	'keyboardCombo': {
+	'KeyboardCombo': {
 		'price': 40,
 		'quantity': 10
 	},
-	'mice': {
+	'Mice': {
 		'price': 20,
 		'quantity': 10
 	},
-	'pc1': {
+	'Pc1': {
 		'price': 350,
 		'quantity': 10
 	},
-	'pc2': {
+	'Pc2': {
 		'price': 400,
 		'quantity': 10
 	},
-	'ps3': {
+	'Ps3': {
 		'price': 300,
 		'quantity': 10
 	},
-	'tent': {
+	'Tent': {
 		'price': 100,
 		'quantity': 10
 	}
 };
 
 var inactiveTime = 300
+
+// grabbing DOM elements
+var showCart = document.getElementById("showCart");
+var closeCart = document.getElementById("closeCart");
+var timeoutVal = document.getElementById("timeoutValue");
+var cartList = document.getElementById("cartList");
 
 function initPage() {
 	runTimer();
@@ -79,17 +85,20 @@ function addToCart(productName) {
 	} else {
 		cart[productName]++;
 		p.quantity--;
+		updateCartPrice();
 	}
 }
 
 function removeFromCart(productName) {
 	resetInactiveTimeout();
+	var p = product[productName];
 	
 	if (cart[productName] === 0) {
 		window.alert("There are no " + productName + " in your cart.");
 	} else {
 		cart[productName]--;
 		p.quantity++;
+		updateCartPrice();
 	}
 }
 
@@ -115,6 +124,53 @@ function showCart() {
 	}
 }
 
+function updateCartPrice() {
+	var totalPrice = 0;
+	
+	for (var name in cart) {
+		var p = product[name];
+		totalPrice += cart[name] * p.price;	
+		showCart.innerHTML = "Show cart ($" + totalPrice + ")";
+	}
+}
+
+function sumPrice() {
+	var price = 0;
+	
+	for (var name in cart) {
+		var p = product[name];
+		totalPrice += cart[name] * p.price;	
+	}
+	
+	totalPrice = price;
+}
+	
+function populateCart() {
+	for (var name in cart) {
+		var p = product[name];
+		
+		if (cart[name] > 0) {
+			var x = document.createElement("p");
+			var t = document.createTextNode(name + ":      " + cart[name]  + " $" + p.price*cart[name]);
+			x.appendChild(t);
+			cartList.appendChild(x);
+		}
+	}
+	
+	var x = document.createElement("p");
+	var total = sumPrice();
+	var t = document.createTextNode("TOTAL PRICE: " + sumPrice());
+	x.appendChild(t);
+	cartList.appendChild(x);
+}
+
+function closeCart() {
+	window.alert("in here");
+	while (showCart.firstChild) {
+		showCart.removeChild(showCart.firstChild);
+	}
+}
+	
 function displayAfterTimeout(timeout, content) {
 	setTimeout(function() {
 		window.alert(content);
@@ -128,9 +184,13 @@ function resetInactiveTimeout() {
 function runTimer() {
 	setInterval(function() {
 		inactiveTime--;
+		timeoutVal.innerHTML = inactiveTime;
 		if (inactiveTime <= 0) {
 			window.alert("Hey there!  Are you still planning to buy something?");
 			inactiveTime = 300;
 		}
 	}, 1000);
 }
+
+// attaching event listeners
+showCart.addEventListener("click", populateCart, false);

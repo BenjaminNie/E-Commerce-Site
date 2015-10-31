@@ -10,7 +10,7 @@
         <div id="logo">My Store</div>
         <div id="welcomeBanner">
 			Welcome To Our Online Shop
-			<button id = "showCart">Show Cart</button>
+			<a id = "showCart" href="#openCart" class="button">Show Cart ($0)</a>
 		</div>
     </div>
 
@@ -26,14 +26,24 @@
                 <li>Supplies</li>
             </ul>
         </div>
+		
+		<div id="openCart" class="cartDialog">
+			<div>
+				<a href="#close" title="Close" class="close">X</a>
+				<h2>Your Cart</h2>
+				<p>ITEM  QUANTITY  PRICE</p>
+				<div id="cartList">	</div>
+			</div>
+		</div>
+						
         <div id="productList">
             <ul>
                 <li id="Box1">
 					<div class="price">$10</div>
 					<div class="pricebg"> </div>	
 					<image class="cartImg" src="images/cart.png" />		
-					<button class="addCart" onclick="addToCart('box1')">Add</button>
-					<button class="removeCart" onclick="removeFromCart('box1')">Remove</button>
+					<button class="addCart" onclick="addToCart('Box1')">Add</button>
+					<button class="removeCart" onclick="removeFromCart('Box1')">Remove</button>
 				    <image class="product" src="images/Box1_$10.png" />	
                     <div class="name">Box1</div>
                 </li>
@@ -142,6 +152,7 @@
 
     <div id="footer">
         Copyright &copy;BenNick 2015 All Rights Reserved
+		<span id="timeoutValue">300</span>
     </div>
 
 <script src="js/script.js"></script>
