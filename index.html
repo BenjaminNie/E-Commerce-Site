@@ -29,10 +29,20 @@
 		
 		<div id="openCart" class="cartDialog">
 			<div>
-				<a href="#close" title="Close" class="close">X</a>
+				<a id= "closeCart" href="#close" title="Close" class="close" >X</a>
 				<h2>Your Cart</h2>
-				<p>ITEM  QUANTITY  PRICE</p>
-				<div id="cartList">	</div>
+				<div id="cartList"> 
+					<table id = "productTable" class="pure-table-bordered" style = "width:75%">
+						<thead id= "heading"> 
+							<th>Product</th>
+							<th>Quantity</th>
+							<th>Price</th>
+						</thead>
+					<tbody id="pBody">
+					</tbody>	
+					
+					</table>
+				</div>
 			</div>
 		</div>
 						

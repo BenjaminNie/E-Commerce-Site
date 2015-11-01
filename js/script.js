@@ -67,8 +67,10 @@ var product = {
 var inactiveTime = 300
 
 // grabbing DOM elements
-var showCart = document.getElementById("showCart");
+var showCart  = document.getElementById("showCart");
 var closeCart = document.getElementById("closeCart");
+var pList = document.getElementById("productTable");
+var pBody = document.getElementById("pBody");
 var timeoutVal = document.getElementById("timeoutValue");
 var cartList = document.getElementById("cartList");
 
@@ -134,40 +136,73 @@ function updateCartPrice() {
 	}
 }
 
-function sumPrice() {
-	var price = 0;
-	
-	for (var name in cart) {
-		var p = product[name];
-		totalPrice += cart[name] * p.price;	
-	}
-	
-	totalPrice = price;
-}
+
 	
 function populateCart() {
+	var tp = 0;	
+		
 	for (var name in cart) {
 		var p = product[name];
 		
 		if (cart[name] > 0) {
-			var x = document.createElement("p");
-			var t = document.createTextNode(name + ":      " + cart[name]  + " $" + p.price*cart[name]);
-			x.appendChild(t);
-			cartList.appendChild(x);
-		}
-	}
+			var row = document.createElement("tr");
+			var pq = document.createElement("td"); 			//product quantity
+			var pp = document.createElement("td"); 			//product price
+			var ab = document.createElement("td");			//
+			var sb = document.createElement("td");			//
+			var add = document.createElement("input"); 		//add button
+			var sub = document.createElement("input"); 		//subtract button
+			var pn = document.createTextNode(name);
+			var qty = document.createTextNode(10 - p.quantity);
+			var prc = document.createTextNode("$" + p.price);
+			
+			add.setAttribute("type", "button");
+			add.setAttribute("value", "+");
+			sub.setAttribute("type", "button");
+			sub.setAttribute("value", "-");
 	
-	var x = document.createElement("p");
-	var total = sumPrice();
-	var t = document.createTextNode("TOTAL PRICE: " + sumPrice());
-	x.appendChild(t);
-	cartList.appendChild(x);
+			pq.appendChild(qty);
+			pp.appendChild(prc);
+			ab.appendChild(add);
+			sb.appendChild(sub);
+			
+			row.appendChild(pn);
+			row.appendChild(pq);
+			row.appendChild(pp);
+			row.appendChild(ab);
+			row.appendChild(sb);
+			
+			pBody.appendChild(row);
+			
+			tp += cart[name] * p.price;			// add total cart items
+			
+		}
+		
+	}
+	var x = document.createElement("tr");
+	var y = document.createElement("td");
+	var z = document.createElement("td");
+	var w = document.createElement("td");
+	
+	var t = document.createTextNode("Total Price:");
+	var s = document.createTextNode(" ");
+	var pr = document.createTextNode("$" + tp);
+	
+	y.appendChild(t);
+	z.appendChild(s);
+	w.appendChild(pr);
+	
+	x.appendChild(y);
+	x.appendChild(z);
+	x.appendChild(w);
+	pBody.appendChild(x);	
+	
 }
 
-function closeCart() {
-	window.alert("in here");
-	while (showCart.firstChild) {
-		showCart.removeChild(showCart.firstChild);
+function clearCart() {
+
+	while (pBody.firstChild) {
+		pBody.removeChild(pBody.firstChild);
 	}
 }
 	
@@ -178,7 +213,7 @@ function displayAfterTimeout(timeout, content) {
 }
 
 function resetInactiveTimeout() {
-	inactiveTime = 30;
+	inactiveTime = 300;
 }
 
 function runTimer() {
@@ -194,3 +229,4 @@ function runTimer() {
 
 // attaching event listeners
 showCart.addEventListener("click", populateCart, false);
+closeCart.addEventListener("click", clearCart, false);
