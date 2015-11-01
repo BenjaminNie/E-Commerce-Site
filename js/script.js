@@ -16,51 +16,63 @@ var cart = {
 var product = {
 	'Box1' : {
 		'price': 10,
-		'quantity': 10
+		'quantity': 10,
+		'name': 'Box1'
 	},
 	'Box2': {
 		'price': 5,
-		'quantity': 10
+		'quantity': 10,
+		'name': 'Box2'
 	},
 	'Clothes1': {
 		'price': 20,
-		'quantity': 10
+		'quantity': 10,
+		'name': 'Clothes1'
 	},
 	'Clothes2': {
 		'price': 30,
-		'quantity': 10
+		'quantity': 10,
+		'name': 'Clothes2'
 	},
 	'Jeans': {
 		'price': 50,
-		'quantity': 10
+		'quantity': 10,
+		'name': 'Jeans'
 	},
 	'Keyboard': {
 		'price': 20,
-		'quantity': 10
+		'quantity': 10,
+		'name': 'Keyboard'
 	},
 	'KeyboardCombo': {
 		'price': 40,
-		'quantity': 10
+		'quantity': 10,
+		'name': 'KeyboardCombo'
 	},
 	'Mice': {
 		'price': 20,
-		'quantity': 10
+		'quantity': 10,
+		'name': 'Mice'
 	},
 	'Pc1': {
 		'price': 350,
-		'quantity': 10
+		'quantity': 10,
+		'name': 'Pc1'
 	},
 	'Pc2': {
 		'price': 400,
-		'quantity': 10
+		'quantity': 10,
+		'name': 'Pc2'
 	},
 	'Ps3': {
 		'price': 300,
-		'quantity': 10
+		'quantity': 10,
+		'name': 'Ps3'
 	},
 	'Tent': {
 		'price': 100,
-		'quantity': 10
+		'quantity': 10,
+		'name': 'Tent'
 	}
 };
 
@@ -79,6 +91,7 @@ function initPage() {
 }
 
 function addToCart(productName) {
+
 	resetInactiveTimeout();
 	var p = product[productName];
 	
@@ -145,6 +158,7 @@ function populateCart() {
 		var p = product[name];
 		
 		if (cart[name] > 0) {
+			
 			var row = document.createElement("tr");
 			var pq = document.createElement("td"); 			//product quantity
 			var pp = document.createElement("td"); 			//product price
@@ -156,10 +170,113 @@ function populateCart() {
 			var qty = document.createTextNode(10 - p.quantity);
 			var prc = document.createTextNode("$" + p.price);
 			
+			add.setAttribute("id", "addModal");
 			add.setAttribute("type", "button");
 			add.setAttribute("value", "+");
+								
+			sub.setAttribute("id", "subModal");
 			sub.setAttribute("type", "button");
-			sub.setAttribute("value", "-");
+			sub.setAttribute("value", "-");			
+			
+			
+			if(p.name == "Box1") {
+				add.onclick = function (){
+					addToCart('Box1');
+				}
+				sub.onclick = function (){
+					removeFromCart('Box1');
+				}
+			}
+			
+			if(p.name == "Box2") {
+				add.onclick = function (){
+					addToCart('Box2');
+				}
+				sub.onclick = function (){
+					removeFromCart('Box2');
+				}
+			}
+			if(p.name == "Clothes1") {
+				add.onclick = function (){
+					addToCart('Clothes1');
+				}
+				sub.onclick = function (){
+					removeFromCart('Clothes1');
+				}
+			}
+			if(p.name == "Clothes2") {
+				add.onclick = function (){
+					addToCart('Clothes2');
+				}
+				sub.onclick = function (){
+					removeFromCart('Clothes2');
+				}
+			}
+			if(p.name == "Jeans") {
+				add.onclick = function (){
+					addToCart('Jeans');
+				}
+				sub.onclick = function (){
+					removeFromCart('Jeans');
+				}
+			}
+			if(p.name == "Keyboard") {
+				add.onclick = function (){
+					addToCart('Keyboard');
+				}
+				sub.onclick = function (){
+					removeFromCart('Keyboard');
+				}
+			}
+			if(p.name == "KeyboardCombo") {
+				add.onclick = function (){
+					addToCart('KeyboardCombo');
+				}
+				sub.onclick = function (){
+					removeFromCart('KeyboardCombo');
+				}
+			}
+			if(p.name == "Mice") {
+				add.onclick = function (){
+					addToCart('Mice');
+				}
+				sub.onclick = function (){
+					removeFromCart('Mice');
+				}
+			}
+			if(p.name == "PC1") {
+				add.onclick = function (){
+					addToCart('PC1');
+				}
+				sub.onclick = function (){
+					removeFromCart('PC1');
+				}
+			}
+			if(p.name == "PC2") {
+				add.onclick = function (){
+					addToCart('PC2');
+				}
+				sub.onclick = function (){
+					removeFromCart('PC2');
+				}
+			}
+			if(p.name == "PC3") {
+				add.onclick = function (){
+					addToCart('PC3');
+				}
+				sub.onclick = function (){
+					removeFromCart('PC3');
+				}
+			}
+			if(p.name == "Tent") {
+				add.onclick = function (){
+					addToCart('Tent');
+				}
+				sub.onclick = function (){
+					removeFromCart('Tent');
+				}
+			}
+			
 	
 			pq.appendChild(qty);
 			pp.appendChild(prc);
@@ -177,6 +294,7 @@ function populateCart() {
 			tp += cart[name] * p.price;			// add total cart items
 			
 		}
+		
 		
 	}
 	var x = document.createElement("tr");
@@ -198,6 +316,9 @@ function populateCart() {
 	pBody.appendChild(x);	
 	
 }
+
+
+
 
 function clearCart() {
 
