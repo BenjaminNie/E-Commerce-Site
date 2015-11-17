@@ -30,13 +30,15 @@
 		<div id="openCart" class="cartDialog">
 			<div>
 				<a id= "closeCart" href="#close" title="Close" class="close" >X</a>
-				<h2>Your Cart</h2>
+				<h1>Your Cart <button id = "checkoutButton" onclick="modalCheckout()">Checkout</button> </h1> 
+				
 				<div id="cartList"> 
 					<table id = "productTable" class="pure-table-bordered" style = "width:75%">
 						<thead id= "heading"> 
 							<th>Product</th>
-							<th>Quantity</th>
 							<th>Price</th>
+							<th>Quantity</th>
+							<th></th>
 						</thead>
 					<tbody id="pBody">
 					</tbody>	
@@ -48,17 +50,17 @@
 						
         <div id="productList">
             <ul>
-                <li id="Box1">
-					<div class="price">$10</div>
+                <li >
+					<div id = "Box1PID" class="price">$10</div>
 					<div class="pricebg"> </div>	
 					<image class="cartImg" src="images/cart.png" />		
-					<button id = "Box1" class="addCart" onclick="addToCart('Box1')">Add</button>
+					<button class="addCart" onclick="addToCart('Box1')">Add</button>
 					<button class="removeCart" onclick="removeFromCart('Box1')">Remove</button>
 				    <image class="product" src="images/Box1_$10.png" />	
                     <div class="name">Box1</div>
                 </li>
                 <li>
-					<div class="price">$5</div>
+					<div id = "Box2PID" class="price">$5</div>
                     <image class="product" src="images/Box2_$5.png" />
                     <div class="pricebg"> </div>	
 					<image class="cartImg" src="images/cart.png" />		
@@ -67,7 +69,7 @@
                     <div class="name">Box2</div>
                 </li>
                 <li>
-					<div class="price">$20</div>
+					<div id = "Clothes1PID" class="price">$20</div>
                     <image class="product" src="images/Clothes1_$20.png" />
                     <div class="pricebg"> </div>	
 					<image class="cartImg" src="images/cart.png" />		
@@ -76,7 +78,7 @@
                     <div class="name">Clothes1</div>
                 </li>
                 <li>
-					<div class="price">$30</div>
+					<div id = "Clothes2PID" class="price">$30</div>
                     <image class="product" src="images/Clothes2_$30.png" />
                     <div class="pricebg"> </div>	
 					<image class="cartImg" src="images/cart.png" />		
@@ -85,7 +87,7 @@
                     <div class="name">Clothes2</div>
                 </li>
                 <li>
-					<div class="price">$50</div>
+					<div id = "JeanPID" class="price">$50</div>
                     <image class="product" src="images/Jeans_$50.png" />
                     <div class="pricebg"> </div>	
 					<image class="cartImg" src="images/cart.png" />		
@@ -94,7 +96,7 @@
                     <div class="name">Jeans</div>
                 </li>
                 <li>
-					<div class="price">$20</div>
+					<div id = "KeyboardPID" class="price">$20</div>
                     <image class="product" src="images/Keyboard_$20.png" />
                     <div class="pricebg"> </div>	
 					<image class="cartImg" src="images/cart.png" />		
@@ -103,7 +105,7 @@
                     <div class="name">Keyboard</div>
                 </li>
                 <li>
-					<div class="price">$40</div>
+					<div id = "KeyboardComboPID" class="price">$40</div>
                     <image class="product" src="images/KeyboardCombo_$40.png" />
                     <div class="pricebg"> </div>	
 					<image class="cartImg" src="images/cart.png" />		
@@ -112,7 +114,7 @@
                     <div class="name">KeyboardCombo</div>
                 </li>
                 <li>
-					<div class="price">$20</div>
+					<div id = "MicePID" class="price">$20</div>
                     <image class="product" src="images/Mice_$20.png" />
                     <div class="pricebg"> </div>	
 					<image class="cartImg" src="images/cart.png" />		
@@ -121,7 +123,7 @@
                     <div class="name">Mice</div>
                 </li>
                 <li>
-					<div class="price">$350</div>
+					<div id = "PC1PID" class="price">$350</div>
                     <image class="product" src="images/PC1_$350.png" />
                     <div class="pricebg"> </div>	
 					<image class="cartImg" src="images/cart.png" />		
@@ -130,7 +132,7 @@
                     <div class="name">PC1</div>
                 </li>
                 <li>
-					<div class="price">$400</div>
+					<div id = "PC2PID" class="price">$400</div>
                     <image class="product" src="images/PC2_$400.png" />
                     <div class="pricebg"> </div>	
 					<image class="cartImg" src="images/cart.png" />		
@@ -139,7 +141,7 @@
                     <div class="name">PC2</div>
                 </li>
                 <li>
-					<div class="price">$300</div>
+					<div id = "PC3PID" class="price">$300</div>
                     <image class="product" src="images/PC3_$300.png" />
                     <div class="pricebg"> </div>	
 					<image class="cartImg" src="images/cart.png" />		
@@ -148,7 +150,7 @@
                     <div class="name">PC3</div>
                 </li>
                 <li>
-					<div class="price">$100</div>
+					<div id = "TentPID" class="price">$100</div>
                     <image class="product" src="images/Tent_$100.png" />
                     <div class="pricebg"> </div>	
 					<image class="cartImg" src="images/cart.png" />		

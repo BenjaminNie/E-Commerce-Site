@@ -204,12 +204,28 @@
 #footer {
     text-align: center;
     color: #2e6680;
+	
 }
 
 
 
 
+#checkoutButton{
+	float: right;
+	position: relative;
+	font-size: 25px;
+	font-weight: bold;
+    font-family: "Times New Roman", Times, serif;
+	padding: 5px;
+	padding-left: 15px;
+	padding-right: 15px;
 
+}
+
+#checkoutButton:Hover{
+	color: red;
+	font-style: italic;
+}
 
 
 

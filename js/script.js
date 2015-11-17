@@ -7,9 +7,9 @@ var cart = {
 	'Keyboard': 0,
 	'KeyboardCombo': 0,
 	'Mice': 0,
-	'Pc1': 0,
-	'Pc2': 0,
-	'Pc3': 0,
+	'PC1': 0,
+	'PC2': 0,
+	'PC3': 0,
 	'Tent': 0
 };
 
@@ -54,20 +54,20 @@ var product = {
 		'quantity': 10,
 		'name': 'Mice'
 	},
-	'Pc1': {
+	'PC1': {
 		'price': 350,
 		'quantity': 10,
-		'name': 'Pc1'
+		'name': 'PC1'
 	},
-	'Pc2': {
+	'PC2': {
 		'price': 400,
 		'quantity': 10,
-		'name': 'Pc2'
+		'name': 'PC2'
 	},
-	'Ps3': {
+	'PC3': {
 		'price': 300,
 		'quantity': 10,
-		'name': 'Ps3'
+		'name': 'PC3'
 	},
 	'Tent': {
 		'price': 100,
@@ -78,6 +78,10 @@ var product = {
 
 var inactiveTime = 300
 
+function initPage() {
+	runTimer();
+}
+
 // grabbing DOM elements
 var showCart  = document.getElementById("showCart");
 var closeCart = document.getElementById("closeCart");
@@ -85,35 +89,45 @@ var pList = document.getElementById("productTable");
 var pBody = document.getElementById("pBody");
 var timeoutVal = document.getElementById("timeoutValue");
 var cartList = document.getElementById("cartList");
+var ajaxAttempts = 0;
+var imagePriceIds = document.getElementsByClassName("price");
+var space = "\u2002";
 
-function initPage() {
-	runTimer();
-}
-
-function addToCart(productName) {
+function addToCart(productName, Modal) {
 
 	resetInactiveTimeout();
 	var p = product[productName];
 	
 	if (p.quantity === 0) {
-		window.alert("There are no " + productName + " left in stock");
+		window.alert("Sorry! We Have No " + productName + "'s Left In Stock :(");
 	} else {
 		cart[productName]++;
 		p.quantity--;
 		updateCartPrice();
+		
+		if(Modal){
+			var mtp = modalTP();
+			document.getElementById("tp").innerHTML = "$" + mtp;
+		}
 	}
+	
 }
 
-function removeFromCart(productName) {
+function removeFromCart(productName, Modal) {
 	resetInactiveTimeout();
 	var p = product[productName];
 	
 	if (cart[productName] === 0) {
-		window.alert("There are no " + productName + " in your cart.");
+		window.alert("Sorry! There Aren't Any " + productName + "'s In Your Cart! \nPlease Click The Add Button To Place An Item Into Your Cart.");
 	} else {
 		cart[productName]--;
 		p.quantity++;
 		updateCartPrice();
+		
+		if(Modal){
+			var mtp = modalTP();
+			document.getElementById("tp").innerHTML = "$" + mtp;
+		}
 	}
 }
 
@@ -126,18 +140,6 @@ function isEmpty(obj) {
 	return true;
 }
 
-function showCart() {
-	var time = 0;
-	
-	if (isEmpty(cart)) {
-		window.alert("Your Cart is Empty! To add an item to your cart, hover over any item and click 'add.' To remove an item from your cart, click 'remove.'");
-	} else {
-		for (var name in cart) {
-			displayAfterTimeout(time, name + ": " + cart[name]);
-			time += 5 * 1000;
-		}
-	}
-}
 
 function updateCartPrice() {
 	var totalPrice = 0;
@@ -148,180 +150,321 @@ function updateCartPrice() {
 		showCart.innerHTML = "Show cart ($" + totalPrice + ")";
 	}
 }
-
-
 	
 function populateCart() {
 	var tp = 0;	
-		
+	
+	var row = [];
+	var pn = [];
+	var qty = [];
+	var prc = [];
+	
+	var pqIds = [];	
+	var ppIds = [];
+	var ab = [];
+	var sb = [];
+	var addIds = [];
+	var subIds = [];
+	
+	var emptystr;
+	
+	var j = 0;
+	
 	for (var name in cart) {
 		var p = product[name];
 		
 		if (cart[name] > 0) {
 			
-			var row = document.createElement("tr");
-			var pq = document.createElement("td"); 			//product quantity
-			var pp = document.createElement("td"); 			//product price
-			var ab = document.createElement("td");			//
-			var sb = document.createElement("td");			//
-			var add = document.createElement("input"); 		//add button
-			var sub = document.createElement("input"); 		//subtract button
-			var pn = document.createTextNode(name);
-			var qty = document.createTextNode(10 - p.quantity);
-			var prc = document.createTextNode("$" + p.price);
-			
-			add.setAttribute("id", "addModal");
-			add.setAttribute("type", "button");
-			add.setAttribute("value", "+");
-								
-			sub.setAttribute("id", "subModal");
-			sub.setAttribute("type", "button");
-			sub.setAttribute("value", "-");			
+			emptystr = document.createTextNode("");		
+			row[j] = document.createElement("tr");
+			pqIds[j] = document.createElement("td"); 		//product quantity
+			ppIds[j] = document.createElement("td"); 		//product price
+			addIds[j] = document.createElement("td");			//
+			subIds[j] = document.createElement("td");			//
 			
 			
-			if(p.name == "Box1") {
-				add.onclick = function (){
-					addToCart('Box1');
-				}
-				sub.onclick = function (){
-					removeFromCart('Box1');
-				}
-			}
+			ab[j] = document.createElement("input"); 		//add button
+			sb[j] = document.createElement("input"); 		//subtract button
 			
-			if(p.name == "Box2") {
-				add.onclick = function (){
-					addToCart('Box2');
-				}
-				sub.onclick = function (){
-					removeFromCart('Box2');
-				}
-			}
-			if(p.name == "Clothes1") {
-				add.onclick = function (){
-					addToCart('Clothes1');
-				}
-				sub.onclick = function (){
-					removeFromCart('Clothes1');
-				}
-			}
-			if(p.name == "Clothes2") {
-				add.onclick = function (){
-					addToCart('Clothes2');
-				}
-				sub.onclick = function (){
-					removeFromCart('Clothes2');
-				}
-			}
-			if(p.name == "Jeans") {
-				add.onclick = function (){
-					addToCart('Jeans');
-				}
-				sub.onclick = function (){
-					removeFromCart('Jeans');
-				}
-			}
-			if(p.name == "Keyboard") {
-				add.onclick = function (){
-					addToCart('Keyboard');
-				}
-				sub.onclick = function (){
-					removeFromCart('Keyboard');
-				}
-			}
-			if(p.name == "KeyboardCombo") {
-				add.onclick = function (){
-					addToCart('KeyboardCombo');
-				}
-				sub.onclick = function (){
-					removeFromCart('KeyboardCombo');
-				}
-			}
-			if(p.name == "Mice") {
-				add.onclick = function (){
-					addToCart('Mice');
-				}
-				sub.onclick = function (){
-					removeFromCart('Mice');
-				}
-			}
-			if(p.name == "PC1") {
-				add.onclick = function (){
-					addToCart('PC1');
-				}
-				sub.onclick = function (){
-					removeFromCart('PC1');
-				}
-			}
-			if(p.name == "PC2") {
-				add.onclick = function (){
-					addToCart('PC2');
-				}
-				sub.onclick = function (){
-					removeFromCart('PC2');
-				}
-			}
-			if(p.name == "PC3") {
-				add.onclick = function (){
-					addToCart('PC3');
-				}
-				sub.onclick = function (){
-					removeFromCart('PC3');
-				}
-			}
-			if(p.name == "Tent") {
-				add.onclick = function (){
-					addToCart('Tent');
-				}
-				sub.onclick = function (){
-					removeFromCart('Tent');
-				}
-			}
 			
+			pn[j] = document.createTextNode(name);
+			qty[j] = document.createTextNode(cart[name]);
+			prc[j] = document.createTextNode("$" + p.price);
+			
+			pqIds[j].setAttribute("id", name + "stock"); 				// label each product quantity element
+			ppIds[j].setAttribute("id", name + "price");
+			row[j].setAttribute("id", name + "row")
+				
+			
+			ab[j].setAttribute("id", name + "addbtn");
+			ab[j].setAttribute("type", "button");
+			ab[j].setAttribute("value", "+");
+				
+			sb[j].setAttribute("id", name + "subbtn");
+			sb[j].setAttribute("type", "button");
+			sb[j].setAttribute("value", "-");			
 	
-			pq.appendChild(qty);
-			pp.appendChild(prc);
-			ab.appendChild(add);
-			sb.appendChild(sub);
 			
-			row.appendChild(pn);
-			row.appendChild(pq);
-			row.appendChild(pp);
-			row.appendChild(ab);
-			row.appendChild(sb);
+			pqIds[j].appendChild(qty[j]);
+			ppIds[j].appendChild(prc[j]);
+			addIds[j].appendChild(ab[j]);
+			subIds[j].appendChild(sb[j]);
 			
-			pBody.appendChild(row);
+			row[j].appendChild(pn[j]);
+			row[j].appendChild(ppIds[j]);
+			row[j].appendChild(pqIds[j]);
 			
-			tp += cart[name] * p.price;			// add total cart items
+			row[j].appendChild(addIds[j]);
+			row[j].appendChild(subIds[j]);
 			
+			pBody.appendChild(row[j]);
+			
+			tp += cart[name] * p.price;		// add total cart items
+			
+			//set the add and subtract quantity buttons
+			var atc = document.getElementById(name + "addbtn").onclick = atcFunc(name);
+			var rfc = document.getElementById(name + "subbtn").onclick = rfcFunc(name);
+						
+			j++; 	// increment product quantity id
 		}
 		
 		
 	}
+	
+	
 	var x = document.createElement("tr");
 	var y = document.createElement("td");
 	var z = document.createElement("td");
-	var w = document.createElement("td");
 	
 	var t = document.createTextNode("Total Price:");
-	var s = document.createTextNode(" ");
 	var pr = document.createTextNode("$" + tp);
 	
-	y.appendChild(t);
-	z.appendChild(s);
-	w.appendChild(pr);
+	var t1 = document.createTextNode("");
+	var t2 = document.createTextNode("");
+	var t3 = document.createTextNode("");
+	var t4 = document.createTextNode("");
+
+	z.setAttribute("id", "tp");
 	
+	y.appendChild(t);
+	z.appendChild(pr);
+
 	x.appendChild(y);
 	x.appendChild(z);
-	x.appendChild(w);
-	pBody.appendChild(x);	
+
+	pBody.appendChild(x);
+	
+
+}
+
+//Handler function for checkout button
+var modalCheckout = function() {
+	getProductsRequest();
+}
+
+
+// adds an item to cart via modal
+function atcFunc (id) {	
+	return function () {
+		
+		addToCart(id, true);
+		document.getElementById(id + "stock").innerHTML = cart[id];
+		
+	}
+}
+
+// removes an item to cart via modal
+// removes entire row for each item that reaches 0
+function rfcFunc (id) {
+	
+	return function () {
+		if(cart[id] == 1){
+			var temp = document.getElementById(id + "row");
+			pBody.removeChild(temp);
+		}
+		removeFromCart(id, true);
+		document.getElementById(id + "stock").innerHTML = cart[id];
+	}
+}
+
+// updates the total price in the modal
+function modalTP(){
+	var totalPrice = 0;
+	
+	for (var name in cart) {
+		var p = product[name];
+		totalPrice += cart[name] * p.price;	
+	}
+	return totalPrice;
+}
+
+function getProductsRequest() {
+	var xhttp = new XMLHttpRequest();
+	
+	xhttp.open("GET", "https://damp-savannah-8835.herokuapp.com/products", true);	
+	xhttp.timeout = 1000; // 1 seconds
+	
+	
+	xhttp.onload = function() {
+		if (xhttp.status == 200) {
+			console.log("Retrieved Data From Server");
+			var serverProduct;		
+			serverProduct = JSON.parse(xhttp.response);
+			var priceChange = [];
+			var prevCart = [];
+			
+			// save previous cart state
+			for(var elem in cart){
+				prevCart[elem] = cart[elem];
+			}
+				
+			
+			// updates client-side product object with server-side product object
+			console.log("Parsing Data From Server");
+			for (var item in serverProduct) {	
+				product[item].quantity = serverProduct[item].quantity; // stock is updated here, NOT cart quantity
+				product[item].price = serverProduct[item].price; // price is updated here
+				
+			}
+			
+			
+			console.log("Updating Prices...");
+			checkCartPrice();
+			
+			console.log("Updating Quantities...");
+			updateCartQuantity();
+			
+			console.log("Updating Modal Total Price...");
+			var mtp = modalTP();
+			document.getElementById("tp").innerHTML = "$" + mtp;
+			
+			console.log("Updating Modal Prices...");
+			updateModalPrice();		
+	
+			console.log("Updating Modal Quantities...");
+			updateModalQuantity(prevCart, serverProduct);
+			
+			console.log("Updating Show Cart...");
+			updateCartPrice();
+			
+			console.log("Updating Product Display..");
+			
+			var index = 0;
+			for (var item in product) {	
+				imagePriceIds[index].innerHTML = product[item].price;
+				index++;
+			}
+			console.log("Finished Updating From Server");
+			
+			
+			window.alert("Your New Total Is:" + space + "$" + mtp + "\nDo You Still Wish To Continue?")
+			
+		} else if(xhttp.status == 500 ){
+			
+			window.alert("Connection Failed Internal Server Error 500");
+		} else{
+			window.alert("HTTP Request Failed");
+		}
+	}
+	
+	xhttp.ontimeout = function() {
+		// request timed out
+		console.log("Timeout" + space + ajaxAttempts + "!\n");
+		
+		if (ajaxAttempts < 5) {
+			ajaxAttempts++;
+			getProductsRequest();
+		} else {
+			window.alert("Connection Failed After" + space + ajaxAttempts + space + "Attempts");
+			ajaxAttempts = 0;
+		}
+	}
+	
+	xhttp.onerror = function () {
+		window.alert("Cannot connect to server");
+	}
+	
+	xhttp.send();
+}
+
+// updates the price in modal after server connection
+function updateModalPrice(){
+	var id;
+	var p;
+	
+	for(var item in cart){
+		p = product[item];
+		id = p.name;
+		if(cart[item] != 0){
+			document.getElementById(id + "price").innerHTML = "$" + p.price;
+		}
+	}
+}
+
+// updates the quantity in modal after server connection
+function updateModalQuantity(pc,sp){
+	var id;
+	var p;
+	
+	// if new stock for an item is 0, remove the item from the modal 
+	for(var elem in sp){
+		if(pc[elem] > sp[elem].quantity && sp[elem].quantity == 0){
+			var temp = document.getElementById(elem + "row");
+			pBody.removeChild(temp);
+			console.log("Removed" + space + product[elem].name + "\n");
+		}
+	}
+	
+	for(var item in cart){
+		p = product[item];
+		id = p.name;
+		if(cart[item] != 0){
+			document.getElementById(id + "stock").innerHTML = "$" + cart[item];
+		}
+	}
+}
+
+// Notifies user of price changes
+function checkCartPrice() {
+	var priceChange = [];
+	var count = 0;
+	
+	for (var item in cart) {
+		if (cart[item] > 0) {	
+			priceChange[count] = product[item].name + ":" + space + "$" + product[item].price + "\n";
+			count++;
+		}
+	}
+	if(priceChange.length != 0){
+		window.alert("Some Items In Your Cart Have Changed Price:\n\n" + priceChange.join(""));
+	}	
+	
+}
+
+// Notifies user of stock changes
+// If user has an item in cart with higher stock,
+// the new cart quantity is the new stock value
+function updateCartQuantity() {
+	var quantityChange = [];
+	var count = 0;
+	
+	for (var item in product) {
+		if (cart[item] > product[item].quantity) {
+			quantityChange[count] = product[item].name + ":" + space + product[item].quantity + "\n";
+			cart[item] = product[item].quantity;
+			count++;
+		}
+	}
+	var msg = "(If Some Items Are Out Of Stock, They Will Be Automatically Removed From Your Cart)\n";
+	if(quantityChange.length != 0){
+		window.alert("Some Items In Your Cart Have Changed Stock:\n" + msg + "\n" + quantityChange.join(""));
+	}
 	
 }
 
 
 
-
 function clearCart() {
-
 	while (pBody.firstChild) {
 		pBody.removeChild(pBody.firstChild);
 	}
@@ -351,3 +494,4 @@ function runTimer() {
 // attaching event listeners
 showCart.addEventListener("click", populateCart, false);
 closeCart.addEventListener("click", clearCart, false);
+
